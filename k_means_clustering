@@ -1,0 +1,28 @@
+#! /bin/bash
+DOC_VECTORS="docs-vectors"
+
+INPUT_DIR="$DOC_VECTORS/tfidf-vectors"
+
+CANOPY_DIR="docs-canopy-centroids"
+
+KMEANS_DIR="docs-kmeans-clusters"
+
+GREEN='\033[0;32m'
+NC='\033[0m' # No Color
+
+for DISTANCE in "CosineDistanceMeasure" "EuclideanDistanceMeasure" "ManhattanDistanceMeasure"
+do
+  echo -e "${GREEN}Using Distance Metric : $DISTANCE. Press Enter to Continue.${NC}"
+  read -p ""
+  mahout canopy -i $INPUT_DIR -ow -o $CANOPY_DIR/$DISTANCE -dm org.apache.mahout.common.distance.$DISTANCE -t1 1500 -t2 2000
+
+  for K in {16..27}
+  do
+    echo -e "${GREEN}[+] Current K Value : $K. ${NC}"
+    mahout kmeans -i $INPUT_DIR -o $KMEANS_DIR/$DISTANCE-k$K -c $CANOPY_DIR/$DISTANCE -dm org.apache.mahout.common.distance.$DISTANCE -cl -cd 0.1 -ow -x 20 -k $K
+
+    input_clusters=$(hadoop fs -ls $KMEANS_DIR/$DISTANCE-k$K | grep -o 'clusters-.*-final' | awk '{print $NF}')
+    mahout seqdumper -i $KMEANS_DIR/$DISTANCE-k$K/clusteredPoints -o $DISTANCE-k$K-points.txt
+    mahout clusterdump -dt sequencefile -i $KMEANS_DIR/$DISTANCE-k$K/$input_clusters -d $DOC_VECTORS/dictionary.file-* -p $KMEANS_DIR/$DISTANCE-k$K/clusteredPoints -n 20 -b 100 --evaluate -o $DISTANCE-k$K-eval.txt
+  done
+done

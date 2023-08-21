@@ -1,0 +1,39 @@
+!/usr/bin/env bash
+
+chmod +x *.py
+
+echo '[+] Solving Q1 - The difference between the maximum and the minimum Wind Speed from all the weather stations for each day in the month'
+hadoop jar /usr/local/Hadoop-2.6.0/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \
+-file mapper_q1.py \
+-mapper mapper_q1.py \
+-file reducer_q1.py \
+-reducer reducer_q1.py \
+-input 200704hourly.txt \
+-output output_question1
+
+echo '[+] Solving Q2 - The daily minimum Relative Humidity from all the weather stations'
+hadoop jar /usr/local/Hadoop-2.6.0/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \
+-file mapper_q2.py \
+-mapper mapper_q2.py \
+-file reducer_q2.py \
+-reducer reducer_q2.py \
+-input 200704hourly.txt \
+-output output_question2
+
+echo '[+] Solving Q3 - The daily mean and variance of Dew Point Temp from all the weather stations'
+hadoop jar /usr/local/Hadoop-2.6.0/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \
+-file mapper_q3.py \
+-mapper mapper_q3.py \
+-file reducer_q3.py \
+-reducer reducer_q3.py \
+-input 200704hourly.txt \
+-output output_question3
+
+echo '[+] Solving Q4 - The correlation matrix that describes the monthly correlation among Relative Humidity, Wind Speed and Dry Bulb Temp from all the weather stations.'
+hadoop jar /usr/local/Hadoop-2.6.0/share/hadoop/tools/lib/hadoop-streaming-2.6.0.jar \
+-file mapper_q4.py \
+-mapper mapper_q4.py \
+-file reducer_q4.py \
+-reducer reducer_q4.py \
+-input 200704hourly.txt \
+-output output_question4

@@ -1,0 +1,22 @@
+------------------------------------------------------------------------------------------------
+Steps to run the above files in local linux terminal :-
+0) Make sure Python3 is Installed.
+1) Copy the 200704hourly.txt dataset to the current folder (Folder with mapper.py and reducer.py files)
+2) Open Terminal in the current folder
+3) Execute the below cmd to run the python files for Question 1:
+    'cat 200704hourly.csv| ./mapper_q1.py | sort | ./reducer_q1.py'
+4) Execute the below cmd to run the python files for Question 2:
+    'cat 200704hourly.csv| ./mapper_q2.py | sort | ./reducer_q2.py'
+5) Execute the below cmd to run the python files for Question 3:
+    'cat 200704hourly.csv| ./mapper_q3.py | sort | ./reducer_q3.py'
+6) Execute the below cmd to run the python files for Question 4:
+    'cat 200704hourly.csv| ./mapper_q4.py | sort | ./reducer_q4.py'
+---------------------------------------------------------------------------------------------------
+Steps to run the above files with Hadoop Map Reduce Framework :-
+1) Copy this folder to the machine where Hadoop is installed.
+2) Copy the 200704hourly.txt dataset to the current folder (Folder with mapper.py and reducer.py files)
+3) Open Terminal in the current folder
+4) Run the execute_with_map_reduce_script file with the below command
+    'bash execute_with_map_reduce_script'
+5) Output folder will be output_question<No>
+-----------------------------------------------------------------------------------------------------
